@@ -224,7 +224,7 @@ function type(x) {
  * @param {number} b 
  * @param {number} s 
  */
-function HugeNumber(a, b, s, f) {
+function HugeNumber(a, b, s) {
     if (b === undefined && s === undefined) {
         if (type(a) === "Number") {
             Object.assign(this, HugeNumber.fromNumber(a));
@@ -248,7 +248,13 @@ function HugeNumber(a, b, s, f) {
         if (a === 1 && b > 2) {
             b = 2;
         }
-
+        
+        if(b > 2) {
+        while(a < 2) {
+            a = Math.pow(10,a);
+            b--;
+        }
+        }
 
         if (b < 2) {
             if (b === 0) {
@@ -271,11 +277,14 @@ function HugeNumber(a, b, s, f) {
             s = 1;
         }
 
-
+  
 
         if (![-1, 0, 1].includes(s)) {
             throw new Error("HugeNumber: Sign must be -1, 0, or 1")
         }
+
+
+        
 
 
         this.a = a;
@@ -283,17 +292,7 @@ function HugeNumber(a, b, s, f) {
         this.s = s;
 
 
-        //Wipe out remaining invalid forms
-        if (f === false) {
-            if ((this.b < 5 || (this.b <= 5 && this.a <= 1.15))) {
-                if (HugeNumber.fromNumber(this.toNumber()).a !== this.a && isFinite(this.toNumber())) {
-                    Object.assign(this, HugeNumber.fromNumber(this.toNumber()));
-
-
-                }
-            }
-
-        }
+        
     }
 
 }

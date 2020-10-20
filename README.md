@@ -6,7 +6,7 @@ Numerical Javascript library capable of calculating with numbers up to `10[1.8e3
 
 ### `HugeNumber()`
 
-Constructs a new HugeNumber. The call of the HugeNumber is `(a,b,?s)` which represents the value `s*10{a-1}b`, where `10{a-1}b` refers to `10^^^...^^^b` (a-1 arrows) in [https://googology.wikia.org/wiki/Arrow_notation](arrow notation).  
+Constructs a new HugeNumber. The call of the HugeNumber is `(a,b,?s)` which represents the value `s*10{a-1}b`, where `10{a-1}b` refers to `10^^^...^^^b` (a-1 arrows) in [arrow notation](https://googology.wikia.org/wiki/Arrow_notation).  
 
 For example, `(9,4,-1)` is equal to the negation of 10 pentated to 9. Fractions can also be paassed for the argument `a`. Note that `s` (the sign of the number) is optional, and is set to `1` by default. It must equal `-1`, `0`, or `1`.
 

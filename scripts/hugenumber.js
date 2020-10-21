@@ -104,20 +104,20 @@ function sroot(x, n) {
     return inv((a) => tetr(a, n), x);
 }
 
-/**
- * Pentation approximation for vanilla JS
- * @param {number} a 
- * @param {number} b 
- */
-function pentate(a, b) {
-    if (b < -1) {
-        return slog(a, pentate(a, b + 1));
-    } else if (b > -1 && b <= 0) {
-        return b + 1;
-    } else {
-        return tetr(a, pentate(a, b - 1));
-    }
-}
+// /**
+//  * Pentation approximation for vanilla JS
+//  * @param {number} a 
+//  * @param {number} b 
+//  */
+// function pentate(a, b) {
+//     if (b < -1) {
+//         return slog(a, pentate(a, b + 1));
+//     } else if (b > -1 && b <= 0) {
+//         return b + 1;
+//     } else {
+//         return tetr(a, pentate(a, b - 1));
+//     }
+// }
 
 
 /**
@@ -135,9 +135,7 @@ function hy(a, b, c) {
         return Math.pow(a, b);
     } else if (c === 3) {
         return tetr(a, b);
-    } else if (c === 4) {
-        return pentate(a, b);
-    } else if (b <= 0) {
+    }  else if (b <= 0) {
         //Use linear approx. for fractions
 
         return b + 1;
@@ -156,23 +154,26 @@ function invHy1(a, b, c) {
         return a - b;
     } else if (c === 1) {
         return a / b;
-    } else if (c === 2) {
-
+    } else if(c === 2) {
+        return Math.log10(b)/Math.log10(a);
+    } else if(c === 3) {
+        return slog(a,b);
     } else {
 
-        var fIdx = n;
-        var ans = x;
-        fIdx--;
-
-        var remainder = x;
-        var count = 0;
-
-        while (remainder >= y) {
-            remainder = hyperoperatorInverse2a(remainder, y, n - 1);
-            count++;
+        if(a >= 2 && b >= 10) {
+            return 2;
         }
-        return count;
-    }
+
+        var rem = b;
+        var result = 0;
+        while(rem > 1) {
+                        result++;
+            rem = invHy1(a,rem,c-1);
+        }
+
+        return result;
+        
+}
 }
 
 /**
@@ -187,8 +188,8 @@ function invHy(a, b, c) {
 }
 
 function invHy10(a, c) {
-    if (c >= 5) {
-        return 1;
+    if (c >= 4) {
+        return invHy1(a,10,c);
     } else {
         return invHy(a, 10, c);
     }
@@ -244,18 +245,11 @@ function HugeNumber(a, b, s) {
             Object.assign(this, new HugeNumber(NaN, NaN, 1));
         }
     } else {
-
         if (a === 1 && b > 2) {
             b = 2;
         }
         
-        if(b > 2) {
-        while(a < 2) {
-            a = Math.pow(10,a);
-            b--;
-        }
-        }
-
+     
         if (b < 2) {
             if (b === 0) {
                 a += 10;
@@ -268,6 +262,13 @@ function HugeNumber(a, b, s) {
             b = 2;
         }
 
+   if(isFinite(a)) {
+        while(a < 2) {
+            a = Math.pow(10,a-1);
+            b--;
+        
+        }
+   
         while (a > 10) {
             a = invHy10(a, b + 1) + 1;
             b++;
@@ -285,7 +286,8 @@ function HugeNumber(a, b, s) {
 
 
         
-
+    }
+    }
 
         this.a = a;
         this.b = b;
@@ -295,7 +297,6 @@ function HugeNumber(a, b, s) {
         
     }
 
-}
 
 
 /**
@@ -722,16 +723,16 @@ HugeNumber.prototype.pow10 = function () {
 }
 
 
-HugeNumber.POSITIVE_INFINITY = new HugeNumber(Infinity);
-HugeNumber.NEGATIVE_INFINITY = new HugeNumber(-Infinity);
-HugeNumber.MIN_VALUE = new HugeNumber(-Number.MAX_VALUE,2);
-HugeNumber.MAX_VALUE = new HugeNumber(Number.MAX_VALUE,Number.MAX_VALUE);
-HugeNumber.ZERO = new HugeNumber(0);
-HugeNumber.ONE = new HugeNumber(1);
-HugeNumber.SQRT1_2 = new HugeNumber(Math.SQRT1_2);
-HugeNumber.SQRT2 = new HugeNumber(Math.SQRT2);
-HugeNumber.E = new HugeNumber(Math.E);
-HugeNumber.PI = new HugeNumber(Math.PI);;
+// HugeNumber.POSITIVE_INFINITY = new HugeNumber(Infinity);
+// HugeNumber.NEGATIVE_INFINITY = new HugeNumber(-Infinity);
+// HugeNumber.MIN_VALUE = new HugeNumber(-Number.MAX_VALUE,2);
+// HugeNumber.MAX_VALUE = new HugeNumber(Number.MAX_VALUE,Number.MAX_VALUE);
+// HugeNumber.ZERO = new HugeNumber(0);
+// HugeNumber.ONE = new HugeNumber(1);
+// HugeNumber.SQRT1_2 = new HugeNumber(Math.SQRT1_2);
+// HugeNumber.SQRT2 = new HugeNumber(Math.SQRT2);
+// HugeNumber.E = new HugeNumber(Math.E);
+// HugeNumber.PI = new HugeNumber(Math.PI);;
 
 
 
